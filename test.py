@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jan 27 16:47:44 2023
+Created on Fri Jan 21 16:47:44 2023
 
 @author: ASUS
 """
 from __future__ import print_function, division
 from builtins import range, input
-# Note: you may need to update your version of future
-# sudo pip install -U future
+
 
 import pickle
 import numpy as np
@@ -91,7 +90,6 @@ df2=pd.read_csv('data/cold_test.csv')
 df3=pd.read_csv('data/less_cold_test.csv')
 df = pd.read_csv('data/test_data.csv')
 
-# split into train and test
 df_test = shuffle(df)
 
 mu1=df2.rating.mean()
