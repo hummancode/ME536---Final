@@ -1,7 +1,6 @@
 from __future__ import print_function, division
 from builtins import range, input
-# Note: you may need to update your version of future
-# sudo pip install -U future
+## this code is vanilla deep network, so it is not used in the project. 
 
 import pickle
 import numpy as np
