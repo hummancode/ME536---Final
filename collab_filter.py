@@ -30,6 +30,7 @@ with open('dict/cold_usermovie2rating_test.json','rb') as f:
     usermovie2rating_cold_test=pickle.load(f)
 with open('dict/colder_usermovie2rating_test.json','rb') as f:
     usermovie2rating_colder_test=pickle.load(f)
+#the test set may contain movies that does not exist in train set, so take both possibilities with m1 and m2
 N=np.max(list(user2movie.keys()))+1
 m1=np.max(list(movie2user.keys()))
 m2=np.max([m for (u,m),r in usermovie2rating_test.items()])
@@ -38,15 +39,15 @@ print("N:",N,"M:",M)
 
 
 
-K=25
-limit=5
-neighbors=[]
-averages=[]
-deviations=[]
-for i in range(N):
+K=25 #number of neighbors that will considered at the last
+limit=5 #number of common movies in order to consider users neighbor
+neighbors=[] #store neighbors in the list
+averages=[] #each users average rating
+deviations=[] #each users deviation
+for i in range(N): # for userId in N which is max user count
     movies_i=user2movie[i]
     movies_i_set=set(movies_i)
-    
+    #calculate average and deviations
     ratings_i={movie:usermovie2rating[(i,movie)] for movie in movies_i}
     avg_i=np.mean(list(ratings_i.values()))
     dev_i={movie:(rating-avg_i) for movie,rating in ratings_i.items()}
@@ -68,13 +69,13 @@ for i in range(N):
                 dev_j_values=np.array(list(dev_j.values()))
                 sigma_j=np.sqrt(dev_j_values.dot(dev_j_values))
                 
-                #
+                #use cosine similarity to calculate weights
                 numerator=sum(dev_i[m]*dev_j[m] for m in common_movies)
                 w_ij=numerator/(sigma_i*sigma_j)
                 
-                
+                #sort all neighbors according to weigght
                 sl.add((-w_ij,j))
-                if len(sl)>K:
+                if len(sl)>K: #only take first 25 neighbors
                     del sl[-1]
     neighbors.append(sl)
 
